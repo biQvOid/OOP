@@ -2,17 +2,17 @@
 #include "figure.h"
 #include <math.h>
 
-triangle::triangle(std::istream& is)
+Triangle::Triangle(std::istream& is)
 {
     std::cin >> a_ >> b_ >> c_;
 }
 
-size_t triangle::VertexesNumber()
+size_t Triangle::VertexesNumber()
 {
     return (size_t)3;
 }
 
-double triangle::Area()
+double Triangle::Area()
 {
     double a = a_.dist(b_);
     double b = b_.dist(c_);
@@ -21,7 +21,7 @@ double triangle::Area()
     return sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
-void triangle::Print(std::ostream& os)
+void Triangle::Print(std::ostream& os)
 {
     std::cout << "Triangle: " << a_ << " " << b_ << " " << c_ << "\n";
 }
