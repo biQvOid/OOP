@@ -4,10 +4,10 @@
 #include "figure.h"
 
 
-class square : figure
+class Square : Figure
 {
 public:
-    square(std::istream& is);
+    Square(std::istream& is);
     size_t VertexesNumber();
     double Area();
     void Print(std::ostream& os);
