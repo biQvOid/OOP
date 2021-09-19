@@ -3,10 +3,10 @@
 
 #include "figure.h"
 
-class triangle : figure
+class Triangle : Figure
 {
 public:
-    triangle(std::istream&);
+    Triangle(std::istream&);
     size_t VertexesNumber();
     double Area();
     void Print(std::ostream& os);
