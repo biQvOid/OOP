@@ -3,11 +3,10 @@
 
 #include "figure.h"
 
-class octagon : figure
+class Octagon : Figure
 {
 public:
-    octagon(std::istream& is);
-
+    Octagon(std::istream& is);
     size_t VertexesNumber();
     double Area();
     void Print(std::ostream& os);
