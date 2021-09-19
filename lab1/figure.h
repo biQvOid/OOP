@@ -3,7 +3,7 @@
 
 #include "point.h"
 
-class figure
+class Figure
 {
 public:
     virtual size_t VertexesNumber() = 0;
