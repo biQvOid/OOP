@@ -29,7 +29,7 @@ public:
     double Area(std::string& tree_path);
     friend std::ostream& operator<<(std::ostream& os, const TNaryTree& tree);
     virtual ~TNaryTree();
-//private:
+private:
     int size;
     int cur_size;
     TreeItem* root;
