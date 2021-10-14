@@ -231,20 +231,20 @@ double TNaryTree::Area(std::string &tree_path)
     return square + this->root->figure.Area();
 }
 
-void Print(std::ostream& os, TreeItem* vertex, TreeItem* root)
+void Print(std::ostream& os, TreeItem* vertex)
 {
     if (vertex != nullptr) {
         std::cout << vertex->figure.Area();
         if (vertex->son != nullptr) {
             std::cout << ": " << "[";
-            Print(os, vertex->son, root);
+            Print(os, vertex->son);
             if (vertex->son->brother == nullptr && vertex->brother != nullptr) {
                 std::cout << "]";
             }
         }
         if (vertex->brother != nullptr) {
             std::cout << ", ";
-            Print(os, vertex->brother, root);
+            Print(os, vertex->brother);
             std::cout << "]";
         }
     } else {
@@ -254,7 +254,7 @@ void Print(std::ostream& os, TreeItem* vertex, TreeItem* root)
 
 std::ostream& operator<<(std::ostream& os, const TNaryTree& tree)
 {   
-    Print(os, tree.root, tree.root); os << "\n";
+    Print(os, tree.root); os << "\n";
     return os;
 }
 
