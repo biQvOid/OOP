@@ -1,5 +1,4 @@
 #include "figure.h"
-#include "square.h"
 #include "TNaryTree.h"
 #include "TNaryTree_item.h"
 #include "octagon.h"
