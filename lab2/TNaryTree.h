@@ -3,6 +3,7 @@
 
 #include "octagon.h"
 #include "TNaryTree_item.h"
+#include <memory>
 
 class TNaryTree
 {
@@ -36,7 +37,6 @@ public:
 
 private:
     int size;
-    int cur_size;
     TreeItem* root;
     void Update(TreeItem** root, octagon polygon, std::string tree_path);
     const octagon& GetItem(TreeItem** root, const std::string tree_path);
