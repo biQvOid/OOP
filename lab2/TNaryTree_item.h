@@ -6,11 +6,11 @@
 class TreeItem
 {
 public:
-
-//private:
     octagon figure;
+    int cur_size;
     TreeItem* son;
     TreeItem* brother;
+    TreeItem* parent;
 };
 
 #endif
