@@ -4,7 +4,6 @@
 TNaryTree::TNaryTree(int n)
 {
     this->size = n;
-    this->cur_size = 0;
     this->root = nullptr;
 }
 
@@ -28,32 +27,32 @@ TreeItem* tree_copy(TreeItem* root)
 
 TNaryTree::TNaryTree(const TNaryTree& other)
 {
-    this->cur_size = 0;
-    this->size = other.size;
     this->root = tree_copy(other.root);
+    this->root->cur_size = 0;
+    this->size = other.size;
 }
 
 void TNaryTree::Update(TreeItem** root, octagon polygon, std::string tree_path)
 {
     if (tree_path == "") {
-        if (this->size == 0) {
-            throw std::out_of_range("Tree is overflow\n");
-            return;
-        }
         if (*root == nullptr) {
         *root = new TreeItem;
         (*root)->figure = polygon;
         (*root)->brother = nullptr;
         (*root)->son = nullptr;
-        this->cur_size++;
+        (*root)->parent = nullptr;
         } else {
             (*root)->figure = polygon;
         }
         return;
     }
+    if (tree_path == "b") {
+        std::cout << "Cant add brother to root\n";
+        return;
+    }
     TreeItem* cur = *root;
     if (cur == NULL) {
-        throw std::invalid_argument("Vertex not exist in path\n");
+        throw std::invalid_argument("Vertex doesn't exist in the path\n");
         return;
     }
     for (int i = 0; i < tree_path.size() - 1; i++) {
@@ -63,12 +62,12 @@ void TNaryTree::Update(TreeItem** root, octagon polygon, std::string tree_path)
             cur = cur->brother;
         }
         if (cur == nullptr && i < tree_path.size() - 1) {
-            throw std::invalid_argument("Vertex not exist in path\n");
+            throw std::invalid_argument("Vertex doesn't exist in the path\n");
             return;
         }
     }
     if (tree_path[tree_path.size() - 1] == 'c' && cur->son == nullptr) {
-        if (this->cur_size + 1 > this->size) {
+        if (cur->cur_size + 1 > this->size) {
             throw std::out_of_range("Tree is overflow\n");
             return;
         }
@@ -77,12 +76,13 @@ void TNaryTree::Update(TreeItem** root, octagon polygon, std::string tree_path)
             cur->son->figure = polygon;
             cur->son->son = nullptr;
             cur->son->brother = nullptr;
-            this->cur_size++;
+            cur->son->parent = cur;
+            cur->son->parent->cur_size++;
         } else {
             cur->son->figure = polygon;
         }
     } else if (tree_path[tree_path.size() - 1] == 'b' && cur->brother == nullptr) {
-        if (this->cur_size + 1 > this->size) {
+        if (cur->parent->cur_size + 1 > this->size) {
             throw std::out_of_range("Tree is overflow\n");
             return;
         }
@@ -91,7 +91,8 @@ void TNaryTree::Update(TreeItem** root, octagon polygon, std::string tree_path)
             cur->brother->figure = polygon;
             cur->brother->son = nullptr;
             cur->brother->brother = nullptr;
-            this->cur_size++;
+            cur->brother->parent = cur->parent;
+            cur->brother->parent->cur_size++;
         } else {
             cur->brother->figure = polygon;
         }
@@ -137,6 +138,11 @@ void delete_undertree(TreeItem** root, char c)
             cur = nullptr;
         } else {
             delete_tree(&((*root)->son));
+
+            //delete cur; ВЫДАЁТ ОШИБКУ ИСПОЛЬЗОВАНИЯ КУЧИ ПОСЛЕ ОСВОБОЖДЕНИЯ
+            //cur = nullptr;
+
+            //delete_tree(&cur); // вызывает ошибку
         }
     }
 }
@@ -227,23 +233,39 @@ void TNaryTree::RemoveSubTree(const std::string &tree_path)
 
 bool TNaryTree::Empty()
 {
-    if (!this->cur_size) {return true;}
-    return false;
+    if (this->root != nullptr) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 double TNaryTree::Area(std::string &&tree_path)
 {
     if (tree_path == "") {
-        return this->root->figure.Area();
+        if (this->root != nullptr) {
+            return this->root->figure.Area();
+        } else {
+            throw std::invalid_argument("Vertex doesn't exist in the path\n");
+        }
     }
     TreeItem* cur = this->root;
     double square = 0;  
     for (int i = 0; i < tree_path.size(); i++) {
         if (tree_path[i] == 'c') {
-            cur = cur->son;
+            if (cur->son != nullptr) {
+                cur = cur->son;
+            } else {
+                throw std::invalid_argument("Vertex doesn't exist in the path\n");
+            }
         } else {
-            cur = cur->brother;
-        } square += cur->figure.Area();
+            if (cur->brother != nullptr) {
+                cur = cur->brother;
+            } else {
+                throw std::invalid_argument("Vertex doesn't exist in the path\n");
+            }
+        } 
+        square += cur->figure.Area();
     }
     return square + this->root->figure.Area();
 }
@@ -251,16 +273,29 @@ double TNaryTree::Area(std::string &&tree_path)
 double TNaryTree::Area(std::string &tree_path)
 {
     if (tree_path == "") {
-        return this->root->figure.Area();
+        if (this->root != nullptr) {
+            return this->root->figure.Area();
+        } else {
+            throw std::invalid_argument("Vertex doesn't exist in the path\n");
+        }
     }
     TreeItem* cur = this->root;
     double square = 0;  
     for (int i = 0; i < tree_path.size(); i++) {
         if (tree_path[i] == 'c') {
-            cur = cur->son;
+            if (cur->son != nullptr) {
+                cur = cur->son;
+            } else {
+                throw std::invalid_argument("Vertex doesn't exist in the path\n");
+            }
         } else {
-            cur = cur->brother;
-        } square += cur->figure.Area();
+            if (cur->brother != nullptr) {
+                cur = cur->brother;
+            } else {
+                throw std::invalid_argument("Vertex doesn't exist in the path\n");
+            }
+        } 
+        square += cur->figure.Area();
     }
     return square + this->root->figure.Area();
 }
@@ -268,18 +303,20 @@ double TNaryTree::Area(std::string &tree_path)
 void Print(std::ostream& os, TreeItem* vertex)
 {
     if (vertex != nullptr) {
-        std::cout << vertex->figure.Area();
+        os << vertex->figure.Area();
         if (vertex->son != nullptr) {
-            std::cout << ": " << "[";
+            os << ": " << "[";
             Print(os, vertex->son);
-            if (vertex->son->brother == nullptr && vertex->brother != nullptr) {
-                std::cout << "]";
+            if ((vertex->son->brother == nullptr && vertex->brother != nullptr) || (vertex->son->brother == nullptr && vertex->brother == nullptr)) {
+                os << "]";
             }
         }
         if (vertex->brother != nullptr) {
-            std::cout << ", ";
+            os << ", ";
             Print(os, vertex->brother);
-            std::cout << "]";
+            if (vertex->brother->brother == nullptr) {
+                os << "]";
+            }
         }
     } else {
         return;
@@ -288,12 +325,20 @@ void Print(std::ostream& os, TreeItem* vertex)
 
 std::ostream& operator<<(std::ostream& os, const TNaryTree& tree)
 {   
-    Print(os, tree.root); os << "\n";
-    return os;
+    if (tree.root != nullptr) {
+        Print(os, tree.root); os << "\n";
+        return os;
+    } else {
+        os << "Tree has no vertex\n";
+        return os;
+    }
 }
 
 const octagon& TNaryTree::GetItem(TreeItem** root, const std::string tree_path)
 {
+    if (tree_path == "" && *root == nullptr) {
+        throw std::invalid_argument("Vertex doesn't exist in the path\n");
+    }
     TreeItem* cur  = *root;
     for (int i = 0; i < tree_path.size(); i++) {
         if (tree_path[i] == 'c') {
