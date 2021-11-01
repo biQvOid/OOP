@@ -37,7 +37,6 @@ public:
 
 private:
     int size;
-    int cur_size;
     std::shared_ptr<TreeItem> root;
     void Update(std::shared_ptr<TreeItem>* root, octagon polygon, std::string tree_path);
     const octagon& GetItem(std::shared_ptr<TreeItem>* root, const std::string tree_path);
