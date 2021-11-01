@@ -8,8 +8,10 @@ class TreeItem
 {
 public:
     octagon figure;
+    int cur_size;
     std::shared_ptr<TreeItem> son;
     std::shared_ptr<TreeItem> brother;
+    std::shared_ptr<TreeItem> parent;
 };
 
 #endif
