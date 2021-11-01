@@ -6,7 +6,7 @@
 
 int main()
 {
-    TNaryTree a(11);
+    TNaryTree a(4);
     if (a.Empty()) {
         std::cout << "The tree is empty !\n";
     } else {
@@ -35,10 +35,10 @@ int main()
     a.Update(octagon(Point(9, 5), Point(9, 1), Point(7, 3), Point(1, 8),
     Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4)), "cccb"); // 11
     std::cout << a;
-    std::cout << a.Area("cbc") << "\n";
+    std::cout << a.Area("cb") << "\n";
     TNaryTree b(a);
     std::cout << b;
-    octagon c = a.GetItem("cbc");
+    octagon c = a.GetItem("");
     std::cout << c;
     a.RemoveSubTree("cbc");
     if (a.Empty()) {
