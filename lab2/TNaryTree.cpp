@@ -138,11 +138,6 @@ void delete_undertree(TreeItem** root, char c)
             cur = nullptr;
         } else {
             delete_tree(&((*root)->son));
-
-            //delete cur; ВЫДАЁТ ОШИБКУ ИСПОЛЬЗОВАНИЯ КУЧИ ПОСЛЕ ОСВОБОЖДЕНИЯ
-            //cur = nullptr;
-
-            //delete_tree(&cur); // вызывает ошибку
         }
     }
 }
