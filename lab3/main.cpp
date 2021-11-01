@@ -12,6 +12,7 @@ int main()
     } else {
         std::cout << "The tree is not empty !\n";
     }
+    std::cout << "а это лаба 3!\n";
     a.Update(octagon(Point(1, 4), Point(1, 2), Point(5, 6), Point(2, 8),
     Point(3, 1), Point(2, 6), Point(9, 5), Point(5, 4)), ""); // 1
     a.Update(octagon(Point(2, 5), Point(1, 5), Point(16, 6), Point(3, 6),
