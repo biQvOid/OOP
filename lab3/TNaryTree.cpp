@@ -32,11 +32,12 @@ TNaryTree::TNaryTree(const TNaryTree& other)
     this->size = other.size;
 }
 
-void TNaryTree::Update(std::shared_ptr<TreeItem>* root, octagon polygon, std::string tree_path)
+void TNaryTree::Update(std::shared_ptr<TreeItem>* root, std::shared_ptr<octagon> polygon, std::string tree_path)
 {
     if (tree_path == "") {
         if (*root == nullptr) {
         *root = std::shared_ptr<TreeItem>(new TreeItem);
+        (*root)->figure = std::shared_ptr<octagon>(new octagon);
         (*root)->figure = polygon;
         (*root)->brother = nullptr;
         (*root)->son = nullptr;
@@ -73,6 +74,7 @@ void TNaryTree::Update(std::shared_ptr<TreeItem>* root, octagon polygon, std::st
         }
         if (cur->son == nullptr) {
             cur->son = std::shared_ptr<TreeItem>(new TreeItem);
+            cur->son->figure = std::shared_ptr<octagon>(new octagon);
             cur->son->figure = polygon;
             cur->son->son = nullptr;
             cur->son->brother = nullptr;
@@ -88,6 +90,7 @@ void TNaryTree::Update(std::shared_ptr<TreeItem>* root, octagon polygon, std::st
         }
         if (cur->brother == nullptr) {
             cur->brother = std::shared_ptr<TreeItem>(new TreeItem);
+            cur->brother->figure = std::shared_ptr<octagon>(new octagon);
             cur->brother->figure = polygon;
             cur->brother->son = nullptr;
             cur->brother->brother = nullptr;
@@ -237,7 +240,7 @@ double TNaryTree::Area(std::string &&tree_path)
 {
     if (tree_path == "") {
         if (this->root != nullptr) {
-            return this->root->figure.Area();
+            return this->root->figure->Area();
         } else {
             throw std::invalid_argument("Vertex doesn't exist in the path\n");
         }
@@ -258,16 +261,16 @@ double TNaryTree::Area(std::string &&tree_path)
                 throw std::invalid_argument("Vertex doesn't exist in the path\n");
             }
         } 
-        square += cur->figure.Area();
+        square += cur->figure->Area();
     }
-    return square + this->root->figure.Area();
+    return square + this->root->figure->Area();
 }
 
 double TNaryTree::Area(std::string &tree_path)
 {
     if (tree_path == "") {
         if (this->root != nullptr) {
-            return this->root->figure.Area();
+            return this->root->figure->Area();
         } else {
             throw std::invalid_argument("Vertex doesn't exist in the path\n");
         }
@@ -288,15 +291,15 @@ double TNaryTree::Area(std::string &tree_path)
                 throw std::invalid_argument("Vertex doesn't exist in the path\n");
             }
         } 
-        square += cur->figure.Area();
+        square += cur->figure->Area();
     }
-    return square + this->root->figure.Area();
+    return square + this->root->figure->Area();
 }
 
 void Print(std::ostream& os, std::shared_ptr<TreeItem> vertex)
 {
     if (vertex != nullptr) {
-        os << vertex->figure.Area();
+        os << vertex->figure->Area();
         if (vertex->son != nullptr) {
             os << ": " << "[";
             Print(os, vertex->son);
@@ -327,7 +330,7 @@ std::ostream& operator<<(std::ostream& os, const TNaryTree& tree)
     }
 }
 
-const octagon& TNaryTree::GetItem(std::shared_ptr<TreeItem>* root, const std::string tree_path)
+const std::shared_ptr<octagon>& TNaryTree::GetItem(std::shared_ptr<TreeItem>* root, const std::string tree_path)
 {
     if (tree_path == "" && *root == nullptr) {
         throw std::invalid_argument("Vertex doesn't exist in the path\n");
