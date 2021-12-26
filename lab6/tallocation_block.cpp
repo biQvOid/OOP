@@ -39,6 +39,5 @@ bool TAllocationBlock::has_free_blocks()
 
 TAllocationBlock::~TAllocationBlock()
 {
-    free(_used_blocks); // а это убирает ошибку :(
-    //delete _used_blocks; // появляется ошибка alloc-dealloc-mismatch... следует разобраться !!!
+    free(_used_blocks);
 }
