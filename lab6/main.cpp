@@ -7,50 +7,6 @@
 
 int main()
 {
-    TNaryTree<octagon> a(4);
-    if (a.Empty()) {
-        std::cout << "The tree is empty !\n";
-    } else {
-        std::cout << "The tree is not empty !\n";
-    }
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(1, 4), Point(1, 2), Point(5, 6), Point(2, 8),
-    Point(3, 1), Point(2, 6), Point(9, 5), Point(5, 4))), ""); // 1
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(2, 5), Point(1, 5), Point(16, 6), Point(3, 6),
-    Point(1, 8), Point(4, 2), Point(7, 3), Point(1, 15))), "c"); // 2
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(3, 5), Point(9, 1), Point(7, 3), Point(1, 8),
-    Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4))), "cb"); // 3
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(4, 4), Point(1, 2), Point(5, 6), Point(2, 8),
-    Point(3, 1), Point(2, 6), Point(9, 5), Point(5, 4))), "cbb"); // 4
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(5, 5), Point(1, 5), Point(16, 6), Point(3, 6),
-    Point(1, 8), Point(4, 2), Point(7, 3), Point(1, 15))), "cbbc"); // 5
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(6, 5), Point(9, 1), Point(7, 3), Point(1, 8),
-    Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4))), "cc"); // 6
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(7, 4), Point(1, 2), Point(5, 6), Point(2, 8),
-    Point(3, 1), Point(2, 6), Point(9, 5), Point(5, 4))), "ccb"); // 7
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(8, 5), Point(1, 5), Point(16, 6), Point(3, 6),
-    Point(1, 8), Point(4, 2), Point(7, 3), Point(1, 15))), "cbc"); // 8
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(9, 5), Point(9, 1), Point(7, 3), Point(1, 8),
-    Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4))), "cbcb"); // 9
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(10, 5), Point(9, 1), Point(7, 3), Point(1, 8),
-    Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4))), "ccc"); // 10
-    a.Update(std::shared_ptr<octagon>(new octagon(Point(11, 5), Point(9, 1), Point(7, 3), Point(1, 8),
-    Point(5, 6), Point(4, 8), Point(9, 5), Point(6, 4))), "cccb"); // 11
-    for (auto i: a) {
-        std::cout << *i << std::endl;
-    }
-    std::cout << a;
-    std::cout << a.Area("cb") << "\n";
-    TNaryTree<octagon> b(a);
-    std::cout << b;
-    std::shared_ptr<octagon> c = a.GetItem("");
-    std::cout << *c;
-    a.RemoveSubTree("cbc");
-    if (a.Empty()) {
-        std::cout << "The tree is empty !\n";
-    } else {
-        std::cout << "The tree is not empty !\n";
-    }
-    std::cout << "Allocation test:\n";
     TAllocationBlock block(sizeof(int), 10);
     int* n1;
     int* n2;
@@ -58,6 +14,18 @@ int main()
     n1 = (int*)block.allocate();
     n2 = (int*)block.allocate();
     n3 = (int*)block.allocate();
+    octagon* f1 = new octagon(Point(1, 1),Point(2, 2),Point(3, 3),Point(4, 4),
+    Point(5, 5),Point(6, 6),Point(7, 7),Point(8, 8));
+    octagon* f2 = new octagon(Point(9, 9),Point(10, 10),Point(11, 11),Point(12, 12),
+    Point(13, 13),Point(14, 14),Point(15, 15),Point(16, 16));
+    octagon* f3 = new octagon(Point(17, 17),Point(18, 18),Point(19, 19),Point(20, 20),
+    Point(21, 21),Point(22, 22),Point(23, 23),Point(24, 24));
+    (*f1).Print(std::cout);
+    (*f2).Print(std::cout);
+    (*f3).Print(std::cout);
+    delete f1;
+    delete f2;
+    delete f3;
     *n1 = 10; *n2 = 100; *n3 = 1000;
     std::cout << *n1 << " " << *n2 << " " << *n3 << "\n";
     if (block.has_free_blocks()) {
