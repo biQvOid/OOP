@@ -70,4 +70,14 @@ void octagon::Print(std::ostream& os)
     std::cout << f_ << " " << g_ << " " << h_ << "\n";
 }
 
+TAllocationBlock octagon::octagonallocator(sizeof(octagon), 10);
+
+void* octagon::operator new(size_t size) {
+    return octagonallocator.allocate();
+}
+
+void octagon::operator delete(void* ptr) {
+    octagonallocator.deallocate(ptr);
+}
+
 octagon::~octagon(){}
