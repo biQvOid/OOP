@@ -3,6 +3,7 @@
 
 #include "point.h"
 #include "figure.h"
+#include "tallocation_block.h"
 
 class octagon : figure
 {
@@ -20,10 +21,13 @@ public:
     bool operator==(octagon& other);
     friend std::ostream& operator<<(std::ostream& os, octagon& other);
     friend std::istream& operator>>(std::istream& is, octagon& other);
+    void* operator new(size_t size);
+    void operator delete(void* ptr);
 
 private:
     Point a_, b_, c_, d_;
     Point e_, f_, g_, h_;
+    static TAllocationBlock octagonallocator;
 };
 
 #endif
