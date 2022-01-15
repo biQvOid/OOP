@@ -6,7 +6,8 @@
     "Square"
   ],
   "containers": [
-    "TNaryTree"
+    "TNaryTree",
+    "TStack"
   ],
   "finished_labs": {
     "lab0.1:5": "lab0_1",
